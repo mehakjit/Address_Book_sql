@@ -317,3 +317,51 @@ ERROR: 1064: You have an error in your SQL syntax; check the manual that corresp
 +------------+-----------+---------+--------------+----------+---------+--------+---------------+--------------------+
 7 rows in set (0.0773 sec)
  MySQL  localhost:33060+ ssl  addressbookservice  SQL >
+
+-------------------------------------------------------------------------------------------
+#UC11
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL >  select * from address_book;
++------------+-----------+--------------+----------+---------+--------+---------------+--------------------+
+| first_name | last_name | address      | city     | state   | zip    | phone_number  | email              |
++------------+-----------+--------------+----------+---------+--------+---------------+--------------------+
+| ashutosh   | aggarwal  | 1234 street  | amritsar | pnb     | 143001 | 9999999995    | ahsutosh@gmail.com |
+| best       | best      | 12345 street | pta      | pnb     | 147004 | 91 9999999996 | best@gmail.com     |
+| Kim        | Kong      | 123 King     | Delhi    | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| King       | Kong      | 123 King     | UT       | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| Mehak      | Singh     | 23 Vasant    | Patiala  | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Mehakjit   | Singh     | 23 Vasant    | Patiala  | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Simar      | Singh     | 123 DLF      | Rohtak   | Haryana | 147004 | 91 9999999999 | xyz@gmail.com      |
++------------+-----------+--------------+----------+---------+--------+---------------+--------------------+
+7 rows in set (0.0006 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > create table type(
+                                                     -> first_name unsigned not null,
+                                                     -> type varchar(150) not null
+                                                     -> );
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'unsigned not null,
+type varchar(150) not null
+)' at line 2
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > create table type( first_name varchar(150) not null, type varchar(150) not null );
+Query OK, 0 rows affected (0.1573 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > insert into type values
+                                                     -> ('ashutosh','friend'),
+                                                     -> ('best','co-worker'),
+                                                     -> ('kim','friend'),
+                                                     -> ('Kong','friend'),
+                                                     -> ('mehak','family'),
+                                                     -> ('simar','family');
+Records: 6  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select * from type;
++------------+-----------+
+| first_name | type      |
++------------+-----------+
+| ashutosh   | friend    |
+| best       | co-worker |
+| Kim        | friend    |
+| Kong       | friend    |
+| Mehak      | family    |
+| simar      | family    |
++------------+-----------+
+6 rows in set (0.0005 sec)
+
