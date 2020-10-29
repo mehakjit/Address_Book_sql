@@ -1,0 +1,319 @@
+MySQL Shell 8.0.22
+
+Copyright (c) 2016, 2020, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 8 (X protocol)
+Server version: 8.0.22 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+___________________________________________________________________________________________
+
+-------------------------------------------------------------------------------------------
+#UC1
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.0008 sec)
+ MySQL  localhost:33060+ ssl  SQL > create database AddressBookService;
+Query OK, 1 row affected (0.0902 sec)
+ MySQL  localhost:33060+ ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| addressbookservice |
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+8 rows in set (0.0009 sec)
+
+-------------------------------------------------------------------------------------------
+#UC2
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  SQL > use addressbookservice
+Default schema set to `addressbookservice`.
+Fetching table and column names from `addressbookservice` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > create table addresss_book_table (
+                                                     -> first_name varchar(150) not null,
+                                                     -> last_name varchar(150) not null,
+                                                     -> address varchar(150) not null,
+                                                     -> city varchar(150) not null,
+                                                     -> state varchar(150) not null,
+                                                     -> zip int not null,
+                                                     -> phone_number varchar(13) not null,
+                                                     -> email varchar(150) not null,
+                                                     -> primary key (first_name)
+                                                     -> );
+Query OK, 0 rows affected (0.1846 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > describe address_book
+                                                     -> ;
+ERROR: 1146: Table 'addressbookservice.address_book' doesn't exist
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > describe address_book_table ;
+ERROR: 1146: Table 'addressbookservice.address_book_table' doesn't exist
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > describe addresss_book_table ;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| first_name   | varchar(150) | NO   | PRI | NULL    |       |
+| last_name    | varchar(150) | NO   |     | NULL    |       |
+| address      | varchar(150) | NO   |     | NULL    |       |
+| city         | varchar(150) | NO   |     | NULL    |       |
+| state        | varchar(150) | NO   |     | NULL    |       |
+| zip          | int          | NO   |     | NULL    |       |
+| phone_number | varchar(13)  | NO   |     | NULL    |       |
+| email        | varchar(150) | NO   |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+8 rows in set (0.0021 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > alter table addresss_book_table rename to address_book
+                                                     -> ;
+Query OK, 0 rows affected (0.1240 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > describe address_book ;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| first_name   | varchar(150) | NO   | PRI | NULL    |       |
+| last_name    | varchar(150) | NO   |     | NULL    |       |
+| address      | varchar(150) | NO   |     | NULL    |       |
+| city         | varchar(150) | NO   |     | NULL    |       |
+| state        | varchar(150) | NO   |     | NULL    |       |
+| zip          | int          | NO   |     | NULL    |       |
+| phone_number | varchar(13)  | NO   |     | NULL    |       |
+| email        | varchar(150) | NO   |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+8 rows in set (0.0900 sec)
+
+-------------------------------------------------------------------------------------------
+#UC3
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > insert into address_book values('Mehakjit', 'Singh', '23 Vasant', 'Patiala', 'Punjab', 147001, '91 9041924692', 'mehakjit@gmail.com'), ('Simran', 'Singh', '123 DLF', 'Rohtak', 'Haryana', 147004, '91 9999999999', 'xyz@gmail.com'), ('King', 'Kong', '123 King', 'Delhi', 'Delhi', 124002, '91 8888888888', 'abc@gmail.com');
+Query OK, 3 rows affected (0.0923 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select * from address_book
+                                                     -> ;
++------------+-----------+-----------+---------+---------+--------+---------------+--------------------+
+| first_name | last_name | address   | city    | state   | zip    | phone_number  | email              |
++------------+-----------+-----------+---------+---------+--------+---------------+--------------------+
+| King       | Kong      | 123 King  | Delhi   | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| Mehakjit   | Singh     | 23 Vasant | Patiala | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Simran     | Singh     | 123 DLF   | Rohtak  | Haryana | 147004 | 91 9999999999 | xyz@gmail.com      |
++------------+-----------+-----------+---------+---------+--------+---------------+--------------------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > update address_book set city='UT' where first_name='King';
+Query OK, 1 row affected (0.0841 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select * from address_book ;
++------------+-----------+-----------+---------+---------+--------+---------------+--------------------+
+| first_name | last_name | address   | city    | state   | zip    | phone_number  | email              |
++------------+-----------+-----------+---------+---------+--------+---------------+--------------------+
+| King       | Kong      | 123 King  | UT      | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| Mehakjit   | Singh     | 23 Vasant | Patiala | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Simran     | Singh     | 123 DLF   | Rohtak  | Haryana | 147004 | 91 9999999999 | xyz@gmail.com      |
++------------+-----------+-----------+---------+---------+--------+---------------+--------------------+
+3 rows in set (0.0782 sec)
+
+-------------------------------------------------------------------------------------------
+#UC4
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > delete from address_book where first_name = 'Simran';
+Query OK, 1 row affected (0.0780 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select * from address_book ;
++------------+-----------+-----------+---------+--------+--------+---------------+--------------------+
+| first_name | last_name | address   | city    | state  | zip    | phone_number  | email              |
++------------+-----------+-----------+---------+--------+--------+---------------+--------------------+
+| King       | Kong      | 123 King  | UT      | Delhi  | 124002 | 91 8888888888 | abc@gmail.com      |
+| Mehakjit   | Singh     | 23 Vasant | Patiala | Punjab | 147001 | 91 9041924692 | mehakjit@gmail.com |
++------------+-----------+-----------+---------+--------+--------+---------------+--------------------+
+2 rows in set (0.0739 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select first_name from address_book where city = 'Patiala';
++------------+
+| first_name |
++------------+
+| Mehakjit   |
++------------+
+1 row in set (0.0005 sec)
+
+-------------------------------------------------------------------------------------------
+#UC5
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select state,count(State) from address_book;
++-------+--------------+
+| state | count(State) |
++-------+--------------+
+| Delhi |            2 |
++-------+--------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select state,count(State) from address_book group by state;
++--------+--------------+
+| state  | count(State) |
++--------+--------------+
+| Delhi  |            1 |
+| Punjab |            1 |
++--------+--------------+
+2 rows in set (0.0006 sec)
+ 
+-------------------------------------------------------------------------------------------
+#UC6
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > insert into address_book values  ('best', 'best', '12345 street', 'pta', 'pnb', 147004, '91 9999999996', 'best@gmail.com'), ('Mehak', 'Singh', '23 Vasant', 'Patiala', 'Punjab', 147001, '91 9041924692', 'mehakjit@gmail.com'), ('Simar', 'Singh', '123 DLF', 'Rohtak', 'Haryana', 147004, '91 9999999999', 'xyz@gmail.com'), ('Kim', 'Kong', '123 King', 'Delhi', 'Delhi', 124002, '91 8888888888', 'abc@gmail.com');
+Query OK, 4 rows affected (0.0846 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select state,count(State) from address_book group by state;
++---------+--------------+
+| state   | count(State) |
++---------+--------------+
+| pnb     |            1 |
+| Delhi   |            2 |
+| Punjab  |            2 |
+| Haryana |            1 |
++---------+--------------+
+4 rows in set (0.0005 sec)
+
+-------------------------------------------------------------------------------------------
+#UC7
+-------------------------------------------------------------------------------------------
+
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select * from address_book where city='Patiala' order by first_name;
++------------+-----------+-----------+---------+--------+--------+---------------+--------------------+
+| first_name | last_name | address   | city    | state  | zip    | phone_number  | email              |
++------------+-----------+-----------+---------+--------+--------+---------------+--------------------+
+| Mehak      | Singh     | 23 Vasant | Patiala | Punjab | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Mehakjit   | Singh     | 23 Vasant | Patiala | Punjab | 147001 | 91 9041924692 | mehakjit@gmail.com |
++------------+-----------+-----------+---------+--------+--------+---------------+--------------------+
+2 rows in set (0.0007 sec)
+
+
+-------------------------------------------------------------------------------------------
+#UC8
+-------------------------------------------------------------------------------------------
+
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > alter table address_book add type varchar(150) after last_name;
+Query OK, 0 rows affected (0.2683 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > describe address_book;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| first_name   | varchar(150) | NO   | PRI | NULL    |       |
+| last_name    | varchar(150) | NO   |     | NULL    |       |
+| type         | varchar(150) | YES  |     | NULL    |       |
+| address      | varchar(150) | NO   |     | NULL    |       |
+| city         | varchar(150) | NO   |     | NULL    |       |
+| state        | varchar(150) | NO   |     | NULL    |       |
+| zip          | int          | NO   |     | NULL    |       |
+| phone_number | varchar(13)  | NO   |     | NULL    |       |
+| email        | varchar(150) | NO   |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+9 rows in set (0.0781 sec)
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > update address_book set type = 'family' where first_name ='mehakjit';
+Query OK, 1 row affected (0.0802 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > update address_book set type = 'family' where first_name ='mehak';
+Query OK, 1 row affected (0.0799 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > update address_book set type = 'friend' where first_name ='Kim';
+Query OK, 1 row affected (0.0043 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > update address_book set type = 'family' where first_name ='King';
+Query OK, 1 row affected (0.0819 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select * from address_book;
++------------+-----------+--------+--------------+---------+---------+--------+---------------+--------------------+
+| first_name | last_name | type   | address      | city    | state   | zip    | phone_number  | email              |
++------------+-----------+--------+--------------+---------+---------+--------+---------------+--------------------+
+| best       | best      | NULL   | 12345 street | pta     | pnb     | 147004 | 91 9999999996 | best@gmail.com     |
+| Kim        | Kong      | friend | 123 King     | Delhi   | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| King       | Kong      | family | 123 King     | UT      | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| Mehak      | Singh     | family | 23 Vasant    | Patiala | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Mehakjit   | Singh     | family | 23 Vasant    | Patiala | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Simar      | Singh     | NULL   | 123 DLF      | Rohtak  | Haryana | 147004 | 91 9999999999 | xyz@gmail.com      |
++------------+-----------+--------+--------------+---------+---------+--------+---------------+--------------------+
+6 rows in set (0.0005 sec)
+
+-------------------------------------------------------------------------------------------
+#UC9
+-------------------------------------------------------------------------------------------
+
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select type,count(type) from address_book where type = 'family' order by type;
++--------+-------------+
+| type   | count(type) |
++--------+-------------+
+| family |           3 |
++--------+-------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select first_name,type,count(type) from address_book where type = 'family' order by type;
++------------+--------+-------------+
+| first_name | type   | count(type) |
++------------+--------+-------------+
+| King       | family |           3 |
++------------+--------+-------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select first_name,type from address_book where type = 'family' order by type;
++------------+--------+
+| first_name | type   |
++------------+--------+
+| King       | family |
+| Mehak      | family |
+| Mehakjit   | family |
++------------+--------+
+3 rows in set (0.0005 sec)
+
+-------------------------------------------------------------------------------------------
+#UC10
+-------------------------------------------------------------------------------------------
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > insert into address_book values
+                                                     -> ('ashutosh', 'aggarwal','friends', '1234 street', 'amritsar', 'pnb', 143001, '9999999995', 'ahsutosh@gmail.com');
+Query OK, 1 row affected (0.0804 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > swlect*from address_book;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'swlect*from address_book' at line 1
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL > select*from address_book;
++------------+-----------+---------+--------------+----------+---------+--------+---------------+--------------------+
+| first_name | last_name | type    | address      | city     | state   | zip    | phone_number  | email              |
++------------+-----------+---------+--------------+----------+---------+--------+---------------+--------------------+
+| ashutosh   | aggarwal  | friends | 1234 street  | amritsar | pnb     | 143001 | 9999999995    | ahsutosh@gmail.com |
+| best       | best      | NULL    | 12345 street | pta      | pnb     | 147004 | 91 9999999996 | best@gmail.com     |
+| Kim        | Kong      | friend  | 123 King     | Delhi    | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| King       | Kong      | family  | 123 King     | UT       | Delhi   | 124002 | 91 8888888888 | abc@gmail.com      |
+| Mehak      | Singh     | family  | 23 Vasant    | Patiala  | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Mehakjit   | Singh     | family  | 23 Vasant    | Patiala  | Punjab  | 147001 | 91 9041924692 | mehakjit@gmail.com |
+| Simar      | Singh     | NULL    | 123 DLF      | Rohtak   | Haryana | 147004 | 91 9999999999 | xyz@gmail.com      |
++------------+-----------+---------+--------------+----------+---------+--------+---------------+--------------------+
+7 rows in set (0.0773 sec)
+ MySQL  localhost:33060+ ssl  addressbookservice  SQL >
